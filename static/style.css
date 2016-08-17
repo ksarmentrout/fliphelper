@@ -1,0 +1,31 @@
+.title-body {
+    text-align: center;
+}
+
+.main-form {
+    float: center;
+}
+
+.vertical-center {
+    min-height: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+}
+
+.jumbotron {
+    float: center;
+    text-align: center;
+}
+
+.textbox {
+    line-height: 30px;
+    height: 30px;
+    font-size: 16px;
+}
+
+.submit-button {
+    line-height: 25px;
+    font-size: 16px;
+}
