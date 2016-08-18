@@ -50,6 +50,7 @@ def search_sold(keywords):
     :param keywords: str, keywords for eBay search
     :return:
     """
+    # TODO: fetch more than the defualt number of items
     try:
         resp = api.execute('findCompletedItems', {'keywords': keywords, 'Condition': 'Used'})
     except ConnectionError:
@@ -120,7 +121,11 @@ def _create_dataframe(results):
 
 
 def _extract_json_fields(result):
-    # Navigates the multi-leveled JSON result produced by eBay
+    '''
+    Navigates the multi-level JSON response from eBay
+    :param result: JSON dict - response about one item from eBay
+    :return: individual fields listed in _create_dataframe()
+    '''
     ti = result.get('title')
     imvl = result.get('isMultiVariationListing')
 

@@ -9,6 +9,25 @@
 
 </head>
 <body>
+    <nav class="navbar navbar-default" style="background: transparent; border: 0;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                      data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{{ url_for('index') }}">FlipHelper</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('about') }}">About</a></li>
+              </ul>
+            </div>
+        </div>
+    </nav>
     <div id="first-body-div">
         <div class="vertical-center" id="form-div" style="background:transparent; float:center;">
         <!--<div class="container">-->
@@ -26,15 +45,15 @@
                                    data-min="0" data-max="9999999" name="asking_price" required>
                         </div>
                         <br>
-                        <div class="col-md-10" style="padding-left: 0px; padding-right: 5px;">
-                            <select class="form-control" name="category">
+                        <div class="col-md-10 category-selector-div">
+                            <select class="form-control category-selector" name="category">
                                 <option selected>All Categories</option>
                                 <option value="1">General</option>
                                 <option value="2">Handmade</option>
                                 <option value="3">Music</option>
                             </select>
                         </div>
-                        <input type="submit" value="Search" class="submit-button btn btn-default"
+                        <input type="submit" value="Search" class="submit-button btn btn-default col-md-2"
                                style="padding-left: 8px; padding-right: 8px;">
                     </form>
                 <br>

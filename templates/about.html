@@ -1,0 +1,86 @@
+<!doctype html>
+
+<head>
+    <title>FlipHelper: About</title>
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="static/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default" style="background: transparent; border: 0;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                      data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{{ url_for('index') }}">FlipHelper</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('about') }}">About</a></li>
+              </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="about-body-div">
+        <div class="container-fluid">
+            <div class="about-body col-md-offset-3 col-md-6">
+                <h2>What is FipHelper?</h2>
+                    <p>
+                        "Flipping" items is blah blah blah... Buy low sell high... Introductory stuff.
+                    </p>
+                    <p>
+                        The problem is that it takes time and experience to start flipping items effectively. It can
+                        also be difficult to get started and take full advantage of garage sale offerings without
+                        knowledge of a wide range of product categories. FlipHelper is your yard sale advisor, bringing
+                        you the latest product values from the top online resale marketplaces and letting you know
+                        whether or not someone's trash can be turned into your treasure.
+                    </p>
+                    <p>
+                        That was a cheezy line.
+                    </p>
+                <br>
+                <h2>How it Works</h2>
+                    <p>
+                        Enter the name or description of an item you find at a yard sale/thrift store/laying around the
+                        house (the more descriptive, the better!). Also enter the asking price, or what you think it's
+                        worth if you already own it. If applicable, select a category that the item falls into. This
+                        serves to exclude irrelevant results that may match your search terms and to include some
+                        niche, category-specific marketplaces.
+                    </p>
+                    <p>
+                        Hit search, and FlipHelper finds the most recent online listings that match your search terms,
+                        across a number of sites such as eBay, Etsy, and Reverb. Based on the most recent sold and
+                        active listings, FlipHelper lets you know if what you're looking at has potential to be
+                        flipped for profit.
+                    </p>
+                    <p>
+                        FlipHelper's insights into market pricing take the guesswork out of yard sale flipping, and
+                        provide you with immediate intuition and insider knowledge about any item you find.
+                    </p>
+                <br>
+                <h2>Credits/Disclaimers</h2>
+                    <p>
+                        The term 'eBay' is a trademark of eBay, Inc. This application uses the eBay API but is not
+                        endorsed or certified by eBay, Inc.
+                    </p>
+                    <p>
+                        The term 'Etsy' is a trademark of Etsy, Inc. This application uses the Etsy API but is not
+                        endorsed or certified by Etsy, Inc.
+                    </p>
+                    <br>
+            </div>
+            <footer class="about-footer footer col-md-offset-3 col-md-6">
+                <p>
+                    Copyright © Keaton Armentrout All Rights Reserved
+                </p>
+            </footer>
+        </div>
+    </div>
+</body>

@@ -13,8 +13,8 @@ app = Flask(__name__)
 app.config.from_object('flask_config')
 
 
-@app.route('/')
-def homepage():
+@app.route('/', methods=['GET'])
+def index():
     return render_template('index.html')
 
 
@@ -32,3 +32,8 @@ def search():
                 'median': stats['median'], 'std': stats['std'], 'verdict': stats['verdict']}
 
     return render_template('result_list.html', **var_dict)
+
+
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
