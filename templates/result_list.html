@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+{% block results %}
+<div class="results-section">
+    {% if verdict == 'buy' %}
+        <h2 class="buy-verdict">Buy!</h2>
+    {% else %}
+        <h2 class="pass-verdict">Pass...</h2>
+    {% endif %}
+    <ul>
+        <li>Average sale price: {{ avg }} </li>
+        <li>Median sale price: {{ median }} </li>
+        <li>Standard deviation: {{ std }} </li>
+        <li>Asking price for your potential item: {{ asking_price }} </li>
+    </ul>
+</div>
+{% endblock %}
