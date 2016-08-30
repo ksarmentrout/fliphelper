@@ -16,9 +16,9 @@ try:
     # resp = api.execute('findItemsAdvanced', {'keywords': 'Super Smash Bros', 'Condition': 'Used'})
     # resp = api.execute('findCompletedItems', {'keywords': 'Super Smash Bros', 'Condition': 'Used'})
     # results = _extract_results(resp)
-    results = ebay.search_sold('Super Smash Bros Melee')
+    results = ebay.search_sold('Python for data analyis')
     cropped_data = data.get_stats(df=results, provider='ebay', asking_price=5)
     import pdb
-    # pdb.set_trace()
+    pdb.set_trace()
 except ConnectionError as exc:
     print(exc)

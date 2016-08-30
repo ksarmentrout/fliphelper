@@ -35,14 +35,14 @@ def ebay_analysis(df, asking_price):
     # This may or may not be needed if we just instead
     # grab the top and bottom 5 or 10 items when ranked
     # by price.
-    uthresh = price_avg + 2*price_std
-    lthresh = price_avg - 2*price_std
+    # uthresh = price_avg + 2*price_std
+    # lthresh = price_avg - 2*price_std
 
     # Set the upper and lower bounds to be
-    # average price +/- 3*std. This is so that
+    # average price +/- 2*std. This is so that
     # we drop the extreme outliers completely
-    ubound = price_avg + 2.5*price_std
-    lbound = price_avg - 2.5*price_std
+    ubound = price_avg + 2*price_std
+    lbound = price_avg - 2*price_std
 
     pruned_data = df.loc[lambda cutoff: (df.sell_price > lbound) & (df.sell_price < ubound), :]
     new_avg = pruned_data['sell_price'].mean()
@@ -57,5 +57,9 @@ def ebay_analysis(df, asking_price):
         verdict = 'pass'
 
     data_dict = {'avg': new_avg, 'median': median, 'std': new_std, 'verdict': verdict}
+
+    # Formatting:
+    for x in ['avg', 'median', 'std']:
+        data_dict[x] = '${:,.2f}'.format(data_dict[x])
 
     return data_dict

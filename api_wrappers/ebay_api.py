@@ -26,7 +26,7 @@ A few notes to self:
 '''
 
 
-# THIS ONLY SEARCHES ACTIVE LISTINGS
+# This only searches active listings
 def search_active(keywords):
     try:
         resp = api.execute('findItemsAdvanced', {'keywords': keywords, 'Condition': 'Used'})
@@ -50,21 +50,36 @@ def search_sold(keywords):
     :param keywords: str, keywords for eBay search
     :return:
     """
-    # TODO: fetch more than the defualt number of items
     try:
-        resp = api.execute('findCompletedItems', {'keywords': keywords, 'Condition': 'Used'})
+        # resp = api.execute('findCompletedItems', {'keywords': keywords, 'Condition': 'Used'})
+        resp = api.execute('findCompletedItems', {'keywords': keywords})
     except ConnectionError:
         return None
 
     # Extract the list of results
-    try:
-        results = _extract_results(resp)
-    except ZeroResultsException:
-        return None
+    # This will throw a ZeroResultsException if nothing is found.
+    # That will be caught by master and used to render a different template.
+    all_results = _extract_results(resp)
+
+    # Determine how many pages of results there are
+    pagination = resp.dict().get('paginationOutput')
+    totalPages = pagination.get('totalPages')
+
+    # Get 3 pages (or totalPages) of results
+    limit = 3
+    if totalPages is not None:
+        if int(totalPages) < limit:
+            limit = int(totalPages)
+
+    for x in range(2,limit+1):
+        more_resp = api.execute('findCompletedItems', {'keywords': keywords, 'Condition': 'Used',
+                                                       'paginationInput': {'pageNumber': x}})
+        more_results = _extract_results(more_resp)
+        all_results.extend(more_results)
 
     # Filter by only those items that sold
     sold_items = []
-    for item in results:
+    for item in all_results:
         # Try to get the sellingState of the item.
         # In case of an error (i.e. dict value does not exist), continue.
         try:
@@ -76,9 +91,10 @@ def search_sold(keywords):
         if sellingState == 'EndedWithSales':
             sold_items.append(item)
 
+    count = len(sold_items)
     sold_items_df = _create_dataframe(sold_items)
 
-    return sold_items_df
+    return sold_items_df, count
 
 
 def _extract_results(response):
@@ -89,7 +105,7 @@ def _extract_results(response):
         results = result_list.get('item')
         if results:
             return results
-    raise ZeroResultsException('No results found, or JSON was incorrectly parsed.')
+    raise ZeroResultsException('No results were found.')
 
 
 def _create_dataframe(results):

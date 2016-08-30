@@ -1,16 +1,151 @@
-{% extends "index.html" %}
-{% block results %}
-<div class="results-section">
-    {% if verdict == 'buy' %}
-        <h2 class="buy-verdict">Buy!</h2>
-    {% else %}
-        <h2 class="pass-verdict">Pass...</h2>
-    {% endif %}
-    <ul>
-        <li>Average sale price: {{ avg }} </li>
-        <li>Median sale price: {{ median }} </li>
-        <li>Standard deviation: {{ std }} </li>
-        <li>Asking price for your potential item: {{ asking_price }} </li>
-    </ul>
+{% extends "base_layout.html" %}
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<div id="results-div" class="col-md-offset-2 col-md-8">
+    <div class="results-section">
+        {% if no_results == False %}
+            <!--{% if verdict == 'buy' %}-->
+                <!--<h2 class="buy-verdict">Buy!</h2>-->
+            <!--{% else %}-->
+                <!--<h2 class="pass-verdict">Pass...</h2>-->
+            <!--{% endif %}-->
+            <!--<ul>-->
+                <!--<li>Average sale price: {{ avg }} </li>-->
+                <!--<li>Median sale price: {{ median }} </li>-->
+                <!--<li>Standard deviation: {{ std }} </li>-->
+                <!--<li>Number of items analyzed: {{ count }}</li>-->
+                <!--<li>Asking price for your potential item: {{ asking_price }} </li>-->
+            <!--</ul>-->
+            <div class="carousel-wrapper">
+                <div id="data-carousel" class="carousel slide" data-ride="carousel", data-interval="false">
+                    <div class="carousel-buttons">
+                    </div>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                        </div>
+                    </div>
+                </div>
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#data-carousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#data-carousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        {% else %}
+            <h2 class="no-results-verdict">No results found.</h2>
+        {% endif %}
+        <p id="another_var_dump">
+        </p>
+        <!--<button onclick="myFunction()">Try it</button>-->
+    </div>
 </div>
+
+<script>
+    var all_providers = ['ebay', 'etsy', 'reverb'];
+    var name_mapping = {'ebay': 'eBay', 'etsy': 'Etsy', 'reverb': 'Reverb'};
+    var tab_list = [];
+    var provider_list = [];
+
+    var data_dict = {{ data_dict|tojson }};
+
+//    Create the tab list of the actual providers that will be visible.
+//    This is so tabs are created only for those providers for which there
+//    is information, instead of having some blank tabs that cover all providers.
+    for (var i = 0; i < all_providers.length; i++) {
+        prov = all_providers[i];
+        if (prov in data_dict) {
+            tab_list.push(name_mapping[prov]);
+            provider_list.push(prov);
+        }
+    }
+
+//    Function that creates the tabs/divs of the carousel in accordance with
+//    data_dict['provider_count']
+    function createSlides() {
+        var provider_count = data_dict['provider_count'];
+//        var carousel = d3.select('.carousel');
+
+        // Create the tabs above the slides
+        d3.select('.carousel-buttons').selectAll('.ss_button')
+                .data(tab_list)  // Make a new div for each item in tab_list
+                .text(String)  // Set the text as the tab_list item text
+                .enter()
+                    .append('div')  // Append the new div into the parent (the .carousel-buttons div)
+                    .attr('data-target', '#data-carousel')
+                    .attr('data-slide-to', function(p) {return tab_list.indexOf(p)})
+                    .attr('href', '#')
+                    .attr('class', 'ss_button')
+                    .text(String);
+
+        // Create the content of the first slide
+        // This is special because it is already initialized and has
+        // the 'active' class
+        var stats = data_dict[provider_list[0]];
+        var first_slide = d3.select('.active');
+        first_slide.append('h2') // Set the title of the slide
+                .html(tab_list[0])
+                .attr('class', 'provider-name');
+        populateSlide(first_slide, stats);
+
+
+        // Create the content of the rest of the slides
+        for (var i = 1; i < provider_list.length; i++) {
+            stats = data_dict[provider_list[i]];
+
+            // Create the div to hold the new carousel slide
+            var slide = d3.select('.carousel-inner')
+                    .append('div')
+                    .attr('class', 'item');
+
+            slide.append('h2')
+                    .html(tab_list[i])
+                    .attr('class', 'provider-name');
+
+            populateSlide(slide, stats);
+        }
+    }
+
+//    Function that populates all of the carousel divs with appropriate information
+    function populateSlide(div, stats) {
+        // Create the verdict section
+        div.append('br');
+        if (stats['verdict'] == 'pass') {
+            div.append('h2').html('Pass...').attr('class', 'pass-verdict');
+        }
+        else {
+            div.append('h2').html('Buy!').attr('class', 'buy-verdict');
+        }
+        div.append('br');
+
+        // Create the unordered list
+        var ul = div.append('ul').attr('class', 'data_ul');
+
+        // 'ebay':{'provider': 'ebay', 'count': 100, 'avg': 50, 'median': 51, 'std': 12, 'verdict': 'pass'}
+        ul.append('li').html('Average sale price: ' + String(stats['avg']));
+        ul.append('li').html('Median sale price: ' + String(stats['median']));
+        ul.append('li').html('Standard deviation: ' + String(stats['std']));
+        ul.append('li').html('Number of items analyzed: ' + String(stats['count']));
+        ul.append('li').html('Asking price for your potential item: ' + "{{ asking_price }}");
+    }
+
+    function myFunction() {
+//        alert(the_text);
+    }
+
+    // To enable swiping through the carousel on mobile
+    // Source: https://github.com/maaaaark/bcSwipe
+    $('.carousel').bcSwipe({ threshold: 50 });
+
+    $(document).ready(function(){
+        d3.select("#another_var_dump").html("{{ asking_price }}");
+        createSlides();
+    });
+
+</script>
+
 {% endblock %}

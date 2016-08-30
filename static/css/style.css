@@ -1,0 +1,190 @@
+/*
+// ---------------------------------------
+// +++++++++++++++++++++++++++++++++++++++ General layout section
+// ---------------------------------------
+*/
+html, body {
+    height: 100%;
+    overflow: auto;
+    overflow-y: scroll;
+}
+
+body {
+    min-height: 100%;
+}
+
+#holder {
+    min-height: 100%;
+    position: relative;
+}
+
+#content-div {
+    padding-bottom: 10px;
+    position: absolute;
+    /*width: 100%;*/
+    /*min-height: 100%*/
+    margin-bottom: 100px;
+}
+
+/*
+// ---------------------------------------
+// +++++++++++++++++++++++++++++++++++++++ Main page section
+// ---------------------------------------
+*/
+#content-div .vertical-center {
+    /*position: relative;*/
+    /*top: 50%;*/
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    padding-bottom: 30px;
+    vertical-align: middle;
+    overflow: auto;
+    background-color: #c7ddef;
+}
+
+.title-body h1 {
+    font-size: 63px;
+    text-align: center;
+}
+
+.input-group-addon {
+    background-color: #FFF;
+    border-right: none;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+form .category-selector-div {
+    padding-left: 0px;
+    padding-right: 5px;
+    padding-bottom: 16px;
+}
+
+.input-group .input-group-addon + .form-control
+{
+    border-left:none;
+}
+
+#main-form {
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+/* Small and smaller screens */
+@media (max-width: 991px) {
+    form .category-selector-div {
+        padding-right: 0px;
+    }
+
+    #main-submit-button {
+        max-width: 150px;
+        width: 40%;
+        /*margin: auto;*/
+    }
+    
+    #button-wrapper {
+        text-align: center;
+    }
+}
+
+/* Only small-sized screens (not phones) */
+@media (min-width: 768px) and (max-width: 991px) {
+    #main-form {
+        max-width: 85%;
+    }
+}
+
+/*
+// ---------------------------------------
+// +++++++++++++++++++++++++++++++++++++++ Search results section
+// ---------------------------------------
+*/
+#results-div {
+    position: relative;
+}
+
+.buy-verdict {
+    color: green;
+    text-align: center;
+}
+
+.pass-verdict {
+    color: red;
+    text-align: center;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+.provider-name {
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.data-ul {
+    width: 70%;
+    margin: auto;
+}
+
+/*
+// ---------------------------------------
+// +++++++++++++++++++++++++++++++++++++++ About section
+// ---------------------------------------
+*/
+.about-body p {
+    text-align: justify;
+}
+
+.about-body h2 {
+    text-align: center;
+}
+
+.about-body {
+    padding-top: 0px;
+    padding-bottom: 20px;
+}
+
+/*
+// ---------------------------------------
+// +++++++++++++++++++++++++++++++++++++++ Contact section
+// ---------------------------------------
+*/
+/*.contact-body p {*/
+    /*text-align: right;*/
+/*}*/
+
+.contact-body h2 {
+    text-align: center;
+}
+
+.contact-body {
+    padding-top: 0px;
+    padding-bottom: 20px;
+}
+
+.contact-body .contact-info {
+    text-align: center;
+}
+
+
+/*
+// ---------------------------------------
+// +++++++++++++++++++++++++++++++++++++++ Footer section
+// ---------------------------------------
+*/
+
+#footer {
+    height: 50px;
+    /*background-color: blue;*/
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+#footer p {
+    font-size: 10px;
+    color: gray;
+    text-align: center;
+    padding-bottom: 10px;
+}
