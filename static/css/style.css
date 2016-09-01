@@ -7,23 +7,26 @@ html, body {
     height: 100%;
     overflow: auto;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 body {
     min-height: 100%;
+    position: relative;
 }
 
 #holder {
     min-height: 100%;
     position: relative;
+    padding-bottom: 6rem;
 }
 
 #content-div {
     padding-bottom: 10px;
-    position: absolute;
+    /*position: absolute;*/
     /*width: 100%;*/
     /*min-height: 100%*/
-    margin-bottom: 100px;
+    /*margin-bottom: 100px;*/
 }
 
 /*
@@ -37,7 +40,7 @@ body {
     min-height: 100%;
     display: flex;
     align-items: center;
-    padding-bottom: 30px;
+    /*padding-bottom: 30px;*/
     vertical-align: middle;
     overflow: auto;
     background-color: #c7ddef;
@@ -113,8 +116,39 @@ form .category-selector-div {
     text-align: center;
 }
 
+#carousel-wrapper {
+
+}
+
+.carousel-buttons.controls{
+    overflow-x: auto;
+    /*padding:0;*/
+    /*margin:0;*/
+    white-space: nowrap;
+    text-align: center;
+    position: relative;
+}
+
+/*.carousel-buttons.controls li {*/
+    /*display: table-cell;*/
+    /*width: 1%;*/
+    /*max-width:90px*/
+/*}*/
+/*.carousel-buttons.controls li.active {*/
+    /*!*background-color:#eee;*!*/
+    /*border-top:3px solid orange;*/
+/*}*/
+/*.carousel-buttons.controls a small {*/
+    /*!*overflow:hidden;*!*/
+    /*display:block;*/
+    /*font-size:10px;*/
+    /*margin-top:5px;*/
+    /*font-weight:bold*/
+/*}*/
+
 .carousel-control.left, .carousel-control.right {
-    background-image: none
+    background-image: none;
+    color: #c7ddef;
 }
 
 .provider-name {
@@ -142,7 +176,7 @@ form .category-selector-div {
 
 .about-body {
     padding-top: 0px;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
 }
 
 /*
@@ -150,10 +184,6 @@ form .category-selector-div {
 // +++++++++++++++++++++++++++++++++++++++ Contact section
 // ---------------------------------------
 */
-/*.contact-body p {*/
-    /*text-align: right;*/
-/*}*/
-
 .contact-body h2 {
     text-align: center;
 }
@@ -180,6 +210,7 @@ form .category-selector-div {
     bottom: 0;
     position: absolute;
     width: 100%;
+    padding: 1rem;
 }
 
 #footer p {

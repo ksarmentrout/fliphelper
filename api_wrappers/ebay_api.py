@@ -23,6 +23,9 @@ A few notes to self:
     Default number of return items is 100. Haven't looked into how to increase that.
     Need to check for isMultiVariationListing!! They are each listed separately and could skew averages. The
         Super Smash Bros search has ~20 of the 'same' result, just different variations.
+
+    The ship_price column isn't always a numeric value. If the shipping type is "Calculated", the ship_price
+        column will be NaN.
 '''
 
 
@@ -38,7 +41,7 @@ def search_active(keywords):
     except ZeroResultsException:
         results = None
 
-    return results
+    return results, len(results)
 
 
 def search_sold(keywords):
@@ -52,7 +55,8 @@ def search_sold(keywords):
     """
     try:
         # resp = api.execute('findCompletedItems', {'keywords': keywords, 'Condition': 'Used'})
-        resp = api.execute('findCompletedItems', {'keywords': keywords})
+        resp = api.execute('findCompletedItems', {'keywords': keywords, 'itemFilter': [{'name': 'SoldItemsOnly',
+                                                  'value': True}]})
     except ConnectionError:
         return None
 
@@ -72,11 +76,13 @@ def search_sold(keywords):
             limit = int(totalPages)
 
     for x in range(2,limit+1):
-        more_resp = api.execute('findCompletedItems', {'keywords': keywords, 'Condition': 'Used',
-                                                       'paginationInput': {'pageNumber': x}})
+        more_resp = api.execute('findCompletedItems', {'keywords': keywords, 'paginationInput': {'pageNumber': x},
+                                                       'itemFilter': [{'name': 'SoldItemsOnly', 'value': True}]})
         more_results = _extract_results(more_resp)
         all_results.extend(more_results)
 
+    # This is no longer needed because I figured out how to properly use the itemFilter param
+    '''
     # Filter by only those items that sold
     sold_items = []
     for item in all_results:
@@ -90,9 +96,10 @@ def search_sold(keywords):
         # If item sold, keep it
         if sellingState == 'EndedWithSales':
             sold_items.append(item)
+    '''
 
-    count = len(sold_items)
-    sold_items_df = _create_dataframe(sold_items)
+    count = len(all_results)
+    sold_items_df = _create_sold_dataframe(all_results)
 
     return sold_items_df, count
 
@@ -108,7 +115,7 @@ def _extract_results(response):
     raise ZeroResultsException('No results were found.')
 
 
-def _create_dataframe(results):
+def _create_sold_dataframe(results):
     title = []
     is_multi_variation_listing = []
     category_id = []
