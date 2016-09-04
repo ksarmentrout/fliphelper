@@ -56,7 +56,8 @@
         // Create the tab list of the actual providers that will be visible.
         // This is so tabs are created only for those providers for which there
         // is information, instead of having some blank tabs that cover all providers.
-        for (var i = 0; i < all_providers.length; i++) {
+        provider_num = all_providers.length;
+        for (var i = 0; i < provider_num; i++) {
             prov = all_providers[i];
             if (prov in data_dict) {
                 tab_list.push(name_mapping[prov]);
@@ -72,7 +73,7 @@
                     .append('button')  // Append the new div into the parent (the .carousel-buttons div)
                     .attr('data-target', '#data-carousel')
                     .attr('data-slide-to', function(p) {return tab_list.indexOf(p)})
-                    .attr('class', 'ss_button')
+                    .attr('class', 'ss_button ')
                     .text(String);
     }
 
@@ -92,11 +93,26 @@
         first_slide.append('h2') // Set the title of the slide
                 .html(tab_list[0])
                 .attr('class', 'provider-name');
+
+        setVerdictHeader(first_slide, stats['verdict']);
+
+        var first_data_wrapper = first_slide.append('div')
+                    .attr('class', 'row')
+                    .attr('id', 'slide-data-wrapper');
+
+        first_data_wrapper.append('div')
+                .attr('class', 'col-md-offset-2 col-md-4 col-sm-12')
+                .attr('id', 'sold-prices');
+
+        first_data_wrapper.append('div')
+                .attr('class', 'col-md-4 col-sm-12')
+                .attr('id', 'active-prices');
         populateSlide(first_slide, stats);
 
 
         // Create the content of the rest of the slides
-        for (var i = 1; i < provider_list.length; i++) {
+        listlen = provider_list.length;
+        for (var i = 1; i < listlen; i++) {
             stats = data_dict[provider_list[i]];
 
             // Create the div to hold the new carousel slide
@@ -108,30 +124,75 @@
                     .html(tab_list[i])
                     .attr('class', 'provider-name');
 
+            // Add the verdict heading
+            setVerdictHeader(slide, stats['verdict']);
+
+            var data_wrapper = slide.append('div')
+                    .attr('class', 'row')
+                    .attr('id', 'slide-data-wrapper');
+
+            data_wrapper.append('div')
+                    .attr('class', 'col-md-offset-2 col-md-4 col-sm-12')
+                    .attr('id', 'sold-prices');
+
+            data_wrapper.append('div')
+                    .attr('class', 'col-md-4 col-sm-12')
+                    .attr('id', 'active-prices');
+
             populateSlide(slide, stats);
         }
     }
 
-//    Function that populates all of the carousel divs with appropriate information
-    function populateSlide(div, stats) {
-        // Create the verdict section
-        div.append('br');
-        if (stats['verdict'] == 'pass') {
+    function setVerdictHeader(div, verdict) {
+//        div.append('br');
+        if (verdict == 'pass') {
             div.append('h2').html('Pass...').attr('class', 'pass-verdict');
         }
         else {
             div.append('h2').html('Buy!').attr('class', 'buy-verdict');
         }
+    }
+
+//    TODO: instead of appending every single thing using javascript, create divs normally
+//    Then locate them via ID here, and fill them in that way. This will prevent the
+//    headache of needing to append like wrapper divs in a row here.
+
+//    Function that populates all of the carousel divs with appropriate information
+    function populateSlide(div, stats) {
+        var sold_stats = stats['sold_stats'];
+        var active_stats = stats['active_stats'];
+
         div.append('br');
 
-        // Create the unordered list
-        var ul = div.append('ul').attr('class', 'data_ul');
+        var sold_div = div.select('#sold-prices');
+        var active_div = div.select('#active-prices');
+
+//      First make the sold items column
+//      -----------------------------------------
+        sold_div.append('h3').html('Sold Item Data');
+
+        // Create the unordered list for sold items
+        var ul = sold_div.append('ul').attr('class', 'data_ul');
 
         // 'ebay':{'provider': 'ebay', 'count': 100, 'avg': 50, 'median': 51, 'std': 12, 'verdict': 'pass'}
-        ul.append('li').html('Average sale price: ' + String(stats['avg']));
-        ul.append('li').html('Median sale price: ' + String(stats['median']));
-        ul.append('li').html('Standard deviation: ' + String(stats['std']));
-        ul.append('li').html('Number of items analyzed: ' + String(stats['count']));
+        ul.append('li').html('Average sale price: ' + String(sold_stats['avg']));
+        ul.append('li').html('Median sale price: ' + String(sold_stats['median']));
+        ul.append('li').html('Standard deviation: ' + String(sold_stats['std']));
+        ul.append('li').html('Number of items analyzed: ' + String(sold_stats['count']));
+        ul.append('li').html('Asking price for your potential item: ' + "{{ asking_price }}");
+
+//      Then make the active items column
+//      -----------------------------------------
+        active_div.append('h3').html('Active Item Data');
+
+        // Create the unordered list for sold items
+        var ul = active_div.append('ul').attr('class', 'data_ul');
+
+        // 'ebay':{'provider': 'ebay', 'count': 100, 'avg': 50, 'median': 51, 'std': 12, 'verdict': 'pass'}
+        ul.append('li').html('Average sale price: ' + String(active_stats['avg']));
+        ul.append('li').html('Median sale price: ' + String(active_stats['median']));
+        ul.append('li').html('Standard deviation: ' + String(active_stats['std']));
+        ul.append('li').html('Number of items analyzed: ' + String(active_stats['count']));
         ul.append('li').html('Asking price for your potential item: ' + "{{ asking_price }}");
     }
 

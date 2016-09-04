@@ -1,14 +1,11 @@
 # Standard Imports
-import os
 
 # Third party imports
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 
-# Local imports
-from api_wrappers import ebay_api as ebay
-from api_wrappers import data_analysis
-from api_wrappers.errors import *
-from api_wrappers import utils
+from functions import data_analysis
+from functions.api_wrappers import ebay_api as ebay
+from functions.utils.errors import *
 
 # Create the app
 app = Flask(__name__)
@@ -68,8 +65,14 @@ def search_results():
     var_dict = {'keywords': keywords, 'category': category, 'asking_price': asking_price, 'data_list': data_list,
                 'no_results': False}
     '''
-    data_dict = {'ebay':{'provider': 'ebay', 'count': 100, 'avg': 50, 'median': 51, 'std': 12, 'verdict': 'pass'},
-                 'etsy': {'provider': 'etsy', 'count': 200, 'avg': 65, 'median': 60, 'std': 8, 'verdict': 'pass'},
+    data_dict = {'ebay':{'provider': 'ebay', 'verdict': 'pass',
+                         'sold_stats': {'count': 100, 'avg': 50, 'median': 51, 'std': 12},
+                         'active_stats': {'count': 101, 'avg': 60, 'median': 61, 'std': 15}
+                         },
+                 'etsy': {'provider': 'etsy', 'verdict': 'pass',
+                          'sold_stats': {'count': 200, 'avg': 65, 'median': 60, 'std': 8},
+                          'active_stats': {'count': 201, 'avg': 75, 'median': 70, 'std': 16}
+                          },
                  'provider_count': 2}
 
     var_dict = {'keywords': 'hand-knitted backpacks', 'category': 'all', 'asking_price': 40, 'data_dict': data_dict,

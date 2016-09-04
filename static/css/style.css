@@ -19,14 +19,22 @@ body {
     min-height: 100%;
     position: relative;
     padding-bottom: 6rem;
+    /*background-color: #c7ddef;*/
 }
 
 #content-div {
     padding-bottom: 10px;
+    margin-bottom: 100px;
+
     /*position: absolute;*/
+    /*top: 10%;*/
+    /*transform: translateY(-50%);*/
     /*width: 100%;*/
     /*min-height: 100%*/
-    /*margin-bottom: 100px;*/
+}
+
+.navbar {
+    margin-bottom: 0px;
 }
 
 /*
@@ -35,15 +43,11 @@ body {
 // ---------------------------------------
 */
 #content-div .vertical-center {
-    /*position: relative;*/
-    /*top: 50%;*/
-    min-height: 100%;
-    display: flex;
     align-items: center;
     /*padding-bottom: 30px;*/
-    vertical-align: middle;
     overflow: auto;
     background-color: #c7ddef;
+    margin-top: 5%;
 }
 
 .title-body h1 {
@@ -104,6 +108,7 @@ form .category-selector-div {
 */
 #results-div {
     position: relative;
+    margin-top: 3%;
 }
 
 .buy-verdict {
@@ -159,6 +164,33 @@ form .category-selector-div {
 .data-ul {
     width: 70%;
     margin: auto;
+}
+
+.carousel-buttons .ss_button {
+    border-radius: 10px;
+    background-color: transparent;
+    /*background-color: #94eb91;*/
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: 5px;
+    border-color: #c7ddef;
+    /*border-color: #94eb91;*/
+    border-width: 3px;
+}
+
+.carousel-buttons .ss_button:hover {
+    background-color: transparent;
+}
+
+.btn:focus,.btn:active {
+   outline: none !important;
+}
+
+.carousel-buttons .ss_button:focus,
+.carousel-buttons .ss_button:active {
+   outline: none !important;
 }
 
 /*
