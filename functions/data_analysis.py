@@ -1,3 +1,7 @@
+# Third party imports
+import pandas
+
+# Local imports
 from functions.utils import utils
 from functions.utils.errors import *
 
@@ -24,20 +28,22 @@ def ebay_analysis(df, asking_price):
     '''
     asking_price = utils.to_float(asking_price)
 
+    # Check if the df is for active or sold listings
     is_sold_data = False
     is_active_data = False
-
-    # Check if the df is for active or sold listings
-    # If there is no 'sell_price' category, the df is
-    # for active listings
-    try:
-        going_prices = df['sell_price']
+    if df['data_type'][0] == 'active':
+        is_active_data = True
+    else:
         is_sold_data = True
-    except KeyError:
+
+    if is_active_data:
         going_prices = df['current_price']
         bin_prices = df['buyitnow_price']
         bin_prices = bin_prices.dropna()  # Drops the NaN values
         is_active_data = True
+    else:
+        going_prices = df['sell_price']
+        is_sold_data = True
 
     price_avg = going_prices.mean()
     price_std = going_prices.std()
@@ -69,12 +75,14 @@ def ebay_analysis(df, asking_price):
         bin_avg = pruned_bin_data.mean()
         bin_median = pruned_bin_data.median()
         bin_std = pruned_bin_data.std()
-    elif is_sold_data:
+        plot_data = None
+    else:
         bin_avg = None
         bin_median = None
         bin_std = None
-    else:
-        raise DataFrameError('Dataframe not identified as either active or sold.')
+        dates, mean_values = get_ebay_sold_plot_data(df)
+        plot_data = {'dates': dates, 'mean_values': mean_values}
+
 
     # TODO: sort pruned_data by price and retrieve the highest and lowest priced items
 
@@ -83,12 +91,38 @@ def ebay_analysis(df, asking_price):
     else:
         verdict = 'pass'
 
-    data_dict = {'avg': new_avg, 'median': median, 'std': new_std, 'verdict': verdict,
-                 'bin_avg': bin_avg, 'bin_median': bin_median, 'bin_std': bin_std}
+    # Create data_dict
+    data_dict = {'verdict': verdict, 'plot_data': plot_data}
+
+    # Give the stats monetary formatting
+    stats_dict = {'avg': new_avg, 'median': median, 'std': new_std,
+                  'bin_avg': bin_avg, 'bin_median': bin_median, 'bin_std': bin_std,
+                  'count': len(df)}
 
     # Formatting:
     for x in ['avg', 'median', 'std', 'bin_avg', 'bin_median', 'bin_std']:
-        if data_dict.get(x) is not None:
-            data_dict[x] = '${:,.2f}'.format(data_dict[x])
+        if stats_dict.get(x) is not None:
+            stats_dict[x] = '${:,.2f}'.format(stats_dict[x])
+
+    if is_active_data:
+        data_dict['active_stats'] = stats_dict
+    else:
+        data_dict['sold_stats'] = stats_dict
 
     return data_dict
+
+
+def get_ebay_sold_plot_data(df):
+    sdf = df.groupby([df.end_time.dt.week, df.end_time.dt.year])
+    avgs = sdf.mean()
+
+    # Extract data into lists for use with Chart.js
+    # Dates is a list of (week, year) tuples
+    dates = []
+    for x in sdf.groups:
+        dates.append(x)
+    date_labels = ['Week ' + str(x[0]) + ', ' + str(x[1]) for x in dates]
+
+    mean_values = avgs['sell_price'].tolist()
+
+    return date_labels, mean_values

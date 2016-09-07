@@ -109,6 +109,22 @@
                 .attr('id', 'active-prices');
         populateSlide(first_slide, stats);
 
+        var plot_data = stats['plot_data'];
+        if (plot_data !== undefined) {
+            var canvas_div = first_slide.append('div')
+                    .attr('class', 'canvas-div');
+            var canvas_wrapper = canvas_div.append('div')
+                    .attr('class', 'canvas-wrapper col-sm-offset-2 col-sm-8');
+            canvas_wrapper.append('canvas')
+                    .attr('id', 'ebay-chart')
+                    .attr('width', '400')
+                    .attr('height', '400');
+
+            // Create chart stuff
+            var ctx = $('#ebay-chart');
+            makeChart(ctx, plot_data['mean_values'], plot_data['dates']);
+        }
+
 
         // Create the content of the rest of the slides
         listlen = provider_list.length;
@@ -141,6 +157,41 @@
 
             populateSlide(slide, stats);
         }
+    }
+
+    function makeChart(ctx, data_points, data_labels) {
+        var data = {
+            labels: data_labels,
+            datasets: [
+                {
+                    label: "Recent Week-to-Week Sale Prices",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: data_points,
+                    spanGaps: false
+                }
+            ]
+        };
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {responsive: false}
+        });
     }
 
     function setVerdictHeader(div, verdict) {
@@ -183,6 +234,10 @@
 
 //      Then make the active items column
 //      -----------------------------------------
+        if (active_stats == undefined) {
+            return
+        }
+
         active_div.append('h3').html('Active Item Data');
 
         // Create the unordered list for sold items
@@ -207,16 +262,21 @@
 	  wrap: false
 	}).on('slid.bs.carousel', function () {
 		curSlide = $('.active');
-	  if(curSlide.is( ':first-child' )) {
-		 $('.left').hide();
-	  } else {
-		 $('.left').show();
-	  }
-	  if (curSlide.is( ':last-child' )) {
-		 $('.right').hide();
-	  } else {
-		 $('.right').show();
-	  }
+      if(curSlide.is(':first-child') && curSlide.is(':last-child')) {
+
+      }
+      else {
+          if (curSlide.is(':first-child')) {
+              $('.left').hide();
+          } else {
+              $('.left').show();
+          }
+          if (curSlide.is(':last-child')) {
+              $('.right').hide();
+          } else {
+              $('.right').show();
+          }
+      }
 	});
 
     $(document).ready(function(){

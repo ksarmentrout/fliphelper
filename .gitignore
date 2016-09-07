@@ -1,5 +1,9 @@
 .idea/workspace.xml
 config.py
 flask_config.py
-code/scratch.py
+functions/scratch.py
 *.csv
+*.pyc
+.tests/.cache/
+.cache/
+__pycache__

@@ -48,10 +48,10 @@ def search_active(keywords):
         more_results = _extract_results(more_resp)
         all_results.extend(more_results)
 
-    count = len(all_results)
+    # count = len(all_results)
     active_items_df = _create_active_dataframe(all_results)
 
-    return active_items_df, count
+    return active_items_df
 
 
 def search_sold(keywords):
@@ -108,10 +108,10 @@ def search_sold(keywords):
             sold_items.append(item)
     '''
 
-    count = len(all_results)
+    # count = len(all_results)
     sold_items_df = _create_sold_dataframe(all_results)
 
-    return sold_items_df, count
+    return sold_items_df
 
 
 def _extract_results(response):
@@ -178,9 +178,10 @@ def _create_sold_dataframe(results):
     sell_price = []
     shipping_type = []
     ship_price = []
+    end_time = []
 
     for result in results:
-        ti, imvl, cid, cnm, sellp, shipt, shipp = _extract_json_fields(result, 'sold')
+        ti, imvl, cid, cnm, sellp, shipt, shipp, endt = _extract_json_fields(result, 'sold')
 
         title.append(ti)
         is_multi_variation_listing.append(imvl)
@@ -189,10 +190,11 @@ def _create_sold_dataframe(results):
         sell_price.append(sellp)
         shipping_type.append(shipt)
         ship_price.append(shipp)
+        end_time.append(endt)
 
-    all_info_dict = {'title': title, 'is_multi_variation_listing': is_multi_variation_listing,
+    all_info_dict = {'title': title, 'data_type': 'sold', 'is_multi_variation_listing': is_multi_variation_listing,
                      'category_id': category_id, 'category_name': category_name, 'sell_price': sell_price,
-                     'shipping_type': shipping_type, 'ship_price': ship_price}
+                     'shipping_type': shipping_type, 'ship_price': ship_price, 'end_time': end_time}
 
     df = pandas.DataFrame.from_dict(data=all_info_dict)
     return df
@@ -227,7 +229,7 @@ def _create_active_dataframe(results):
         shipping_type.append(shipt)
         ship_price.append(shipp)
 
-    all_info_dict = {'title': title, 'is_multi_variation_listing': is_multi_variation_listing,
+    all_info_dict = {'title': title, 'data_type': 'active', 'is_multi_variation_listing': is_multi_variation_listing,
                      'category_id': category_id, 'category_name': category_name, 'current_price': current_price,
                      'is_buyitnow': is_buyitnow, 'buyitnow_price': buyitnow_price, 'shipping_type': shipping_type,
                      'ship_price': ship_price}
@@ -262,9 +264,10 @@ def _extract_json_fields(result, list_type):
     else:
         sellp = None
 
-    # Get fields specific to active listings
+
+    # Get fields specific to active or sold listings
+    list_info = result['listingInfo']
     if list_type == 'active':
-        list_info = result['listingInfo']
         isbin = list_info['buyItNowAvailable']
 
         if isbin == 'true':
@@ -274,7 +277,9 @@ def _extract_json_fields(result, list_type):
                 binp = None
         else:
             binp = None
-
+    else:
+        endt = list_info.get('endTime')
+        endt = pandas.to_datetime(endt)
 
     shipping_info = result.get('shippingInfo')
     if shipping_info is not None:
@@ -291,4 +296,4 @@ def _extract_json_fields(result, list_type):
     if list_type == 'active':
         return ti, imvl, cid, cnm, sellp, isbin, binp, shipt, shipp
     else:
-        return ti, imvl, cid, cnm, sellp, shipt, shipp
+        return ti, imvl, cid, cnm, sellp, shipt, shipp, endt

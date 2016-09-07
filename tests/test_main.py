@@ -73,7 +73,7 @@ class TestEbay:
             assert False
         else:
             # Get only those columns from the df with numeric values
-            numeric_df = df[['category_name', 'list_price']]
+            numeric_df = df[['category_name', 'current_price']]
 
             # Check if there are any NaNs in them. Fail if so.
             if numeric_df.isnull().values.any():

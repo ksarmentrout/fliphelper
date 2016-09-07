@@ -193,6 +193,24 @@ form .category-selector-div {
    outline: none !important;
 }
 
+.canvas-div {
+    width: 100%;
+}
+
+#ebay-chart {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+
+
+
 /*
 // ---------------------------------------
 // +++++++++++++++++++++++++++++++++++++++ About section
