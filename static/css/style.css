@@ -6,36 +6,106 @@
 html, body {
     height: 100%;
     overflow: auto;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     overflow-x: hidden;
 }
 
 body {
     min-height: 100%;
     position: relative;
+    /*background-color: #e0eaf9; !* For browsers that do not support gradients *!*/
+    /*background: -webkit-linear-gradient(-90deg, #e0eaf9, whitesmoke); !* For Safari 5.1 to 6.0 *!*/
+    /*background: -o-linear-gradient(bottom right, #e0eaf9, whitesmoke); !* For Opera 11.1 to 12.0 *!*/
+    /*background: -moz-linear-gradient(bottom right, #e0eaf9, whitesmoke); !* For Firefox 3.6 to 15 *!*/
+    /*background: linear-gradient(160deg, rgba(0, 229, 55, 0.8), rgba(0, 127, 31, 0.8)); !* Standard syntax *!*/
+    /* Potential colors:
+        Greens: #47d85f, #16e238, #4CFF77, #00E537, #007F1F
+        Blues: #e0eaf9
+        Whites: whitesmoke
+    */
+    /*background: url("/static/img/blur-background09.jpg");*/
+    /*background-size: cover;*/
+
+
+    /* Even bigger arrows! */
+    /* [180, 256, 364, 540, 90, 272, 452, 634, 512] */
+    background:
+linear-gradient(45deg, #317F47 120px, transparent 120px)171px 171px,
+linear-gradient(45deg, #317F47 120px, transparent 120px,transparent 241px, #489E60 241px, #489E60 360px, transparent 360px),
+linear-gradient(-45deg, #317F47 60px, transparent 60px, transparent 182px,#317F47 182px,#317F47 301px,transparent 301px,transparent 423px,#317F47 423px);
+background-color:#489E60;
+background-size: 341px 341px;
+
+
+    /* Color options*/
+    /* Original colors: 92baac, e1ebbd*/
+    /* Other options:
+        Greens: 3B9978, 317F64
+        More: 317F47, 489E60
+        Lighter versions of ^ greens: 42AB5B (66, 171, 91), 78F797 (120, 247, 151)
+        Still more greens: 318C45, 55BD6B
+        Grey: 78998E (rgb: 120, 153, 142), 5A736A (90, 115, 106)
+        Darker grey: 364245 (54, 66, 69)
+        Purple: B03ACC (176, 58, 204), 9E7CFF (158, 124, 255)
+        Rust red: AB5642 (171, 86, 66)
+
+    */
+
+
 }
 
 #holder {
     min-height: 100%;
     position: relative;
-    padding-bottom: 6rem;
+    /*padding-bottom: 6rem;*/
     /*background-color: #c7ddef;*/
+    overflow: hidden;
 }
 
 #content-div {
     padding-bottom: 10px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 
     /*position: absolute;*/
     /*top: 10%;*/
     /*transform: translateY(-50%);*/
     /*width: 100%;*/
-    /*min-height: 100%*/
+    /*min-height: 100%;*/
+    overflow: hidden;
 }
 
 .navbar {
-    margin-bottom: 0px;
+    margin-bottom: 0;
+    background-color: rgba(54, 66, 69, 0.95);
+    /*background: transparent; */
+    border: 0;
 }
+
+.navbar a {
+    color: white !important;
+}
+
+.hollow_bubble {
+    align-items: center;
+    overflow: auto;
+    margin-top: 4%;
+    margin-bottom: 3%;
+    border-radius: 10px;
+    border: 5px solid rgba(54, 66, 69, 0.95);
+}
+
+.solid_bubble {
+    align-items: center;
+    overflow: auto;
+    margin-top: 4%;
+    margin-bottom: 3%;
+    border-radius: 10px;
+    background-color: rgba(54, 66, 69, 0.95);
+    /*padding-top: 5%;*/
+    /*padding-bottom: 5%;*/
+    color: white;
+}
+
 
 /*
 // ---------------------------------------
@@ -46,13 +116,26 @@ body {
     align-items: center;
     /*padding-bottom: 30px;*/
     overflow: auto;
-    background-color: #c7ddef;
+    /*background-color: #c7ddef;*/
     margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.title-body {
+    border-radius: 10px;
+    background-color: rgba(54, 66, 69, 0.95);
+    /*padding-bottom: 20%;*/
+    /*margin-bottom: 5%;*/
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
 
 .title-body h1 {
     font-size: 63px;
     text-align: center;
+    color: white;
+    padding-top: 0;
+    margin-top: 0;
 }
 
 .input-group-addon {
@@ -62,9 +145,13 @@ body {
 }
 
 form .category-selector-div {
-    padding-left: 0px;
-    padding-right: 5px;
+    padding-left: 0;
+    padding-right: 0;
     padding-bottom: 16px;
+}
+
+.input-group #first_question {
+    border-radius: 4px;
 }
 
 .input-group .input-group-addon + .form-control
@@ -77,6 +164,34 @@ form .category-selector-div {
     padding-right: 8%;
 }
 
+#main-submit-button {
+    background-color: rgba(158, 124, 255, 1);
+    border-color: rgba(158, 124, 255, 1);
+    height: 50px;
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+#button-wrapper {
+    /*display: inline;*/
+}
+
+#circle_info_button {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    font-size: 24px;
+    line-height: 1.33;
+    border-radius: 35px;
+    text-align: center;
+    color: white;
+    vertical-align: text-top;
+    margin: auto;
+    background-color: #AB5642;
+    border-color: #AB5642;
+}
+
 /* Small and smaller screens */
 @media (max-width: 991px) {
     form .category-selector-div {
@@ -84,9 +199,10 @@ form .category-selector-div {
     }
 
     #main-submit-button {
-        max-width: 150px;
+        /*max-width: 150px;*/
         width: 40%;
         /*margin: auto;*/
+        font-size: larger;
     }
     
     #button-wrapper {
@@ -96,10 +212,18 @@ form .category-selector-div {
 
 /* Only small-sized screens (not phones) */
 @media (min-width: 768px) and (max-width: 991px) {
-    #main-form {
-        max-width: 85%;
+    /*#main-form {*/
+        /*max-width: 85%;*/
+    /*}*/
+}
+
+@media (max-width: 550px) {
+    #main-submit-button {
+        /*font-weight: normal;*/
+        font-size: small;
     }
 }
+
 
 /*
 // ---------------------------------------
@@ -218,6 +342,8 @@ form .category-selector-div {
 */
 .about-body p {
     text-align: justify;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 .about-body h2 {
@@ -225,8 +351,8 @@ form .category-selector-div {
 }
 
 .about-body {
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
 
 /*
@@ -238,13 +364,23 @@ form .category-selector-div {
     text-align: center;
 }
 
+.contact-body p {
+    text-align: justify;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
 .contact-body {
-    padding-top: 0px;
-    padding-bottom: 20px;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
 
 .contact-body .contact-info {
     text-align: center;
+}
+
+.contact-info #contact_email {
+    color: rgba(158, 124, 255, 1);
 }
 
 
@@ -255,7 +391,7 @@ form .category-selector-div {
 */
 
 #footer {
-    height: 50px;
+    /*height: 50px;*/
     /*background-color: blue;*/
     bottom: 0;
     position: absolute;
@@ -265,7 +401,7 @@ form .category-selector-div {
 
 #footer p {
     font-size: 10px;
-    color: gray;
+    color: black;
     text-align: center;
     padding-bottom: 10px;
 }

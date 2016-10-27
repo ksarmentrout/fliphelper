@@ -4,6 +4,6 @@ flask_config.py
 functions/scratch.py
 *.csv
 *.pyc
-.tests/.cache/
+.tests/
 .cache/
 __pycache__

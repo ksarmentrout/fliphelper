@@ -1,7 +1,7 @@
 # Standard Imports
 
 # Third party imports
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from functions import data_analysis
 from functions.api_wrappers import ebay_api as ebay
@@ -75,7 +75,7 @@ def search_results():
     var_dict = {'keywords': keywords, 'category': category, 'asking_price': asking_price, 'data_list': data_list,
                 'no_results': False}
     '''
-
+    '''
     keywords = 'super smash bros melee'
     category = 'all'
     asking_price = '40'
@@ -96,7 +96,7 @@ def search_results():
                           'active_stats': {'count': 201, 'avg': 75, 'median': 70, 'std': 16}
                           },
                  'provider_count': 2}
-    '''
+
 
 
     var_dict = {'keywords': 'hand-knitted backpacks', 'category': 'all', 'asking_price': 40, 'data_dict': data_dict,

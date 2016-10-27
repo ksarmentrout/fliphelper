@@ -3,42 +3,48 @@
 
 {% block content %}
 <div class="vertical-center row" id="form-div">
-    <div class="title-body col-md-offset-3 col-md-6 col-xs-12">
-        <h1 id="main-title">FlipHelper</h1>
-        <br>
-        <!--<form action="/search_results" method="post" class="col-xs-10 col-md-offset-2 col-md-8 main-form form-group">-->
-        <form action="/search_results" method="post" class="center-block form-group" id="main-form">
-            <input type="text" placeholder="What are you flipping today?" class="form-control textbox"
-                   name="keywords" required>
+    <div class="title-body col-md-offset-2 col-md-8 col-xs-12">
+        <div class="vertical-center">
+            <h1 id="main-title">FlipHelper</h1>
             <br>
-            <div class="input-group">
-                <span class="input-group-addon">$</span>
-                <input type="text" placeholder="What is the asking price?" class="form-control bfh-number"
-                       data-min="0" data-max="9999999" name="asking_price" required>
-            </div>
-            <br>
-            <div class="col-md-10 category-selector-div">
-                <select class="form-control category-selector" name="category">
-                    <option selected>All Categories</option>
-                    <option value="1">General</option>
-                    <option value="2">Handmade</option>
-                    <option value="3">Music</option>
-                </select>
-            </div>
-            <!--<input type="submit" value="Search" class="submit-button btn btn-default col-md-2 col-sm-offset-4 col-sm-4-->
-                   <!--col-md-offset-0 col-lg-offset-0"-->
-                   <!--style="padding-left: 8px; padding-right: 8px;" id="main-submit-button">-->
-            <div id="button-wrapper">
-                <input type="submit" value="Search" class="submit-button btn btn-default col-md-2"
-                       style="padding-left: 8px; padding-right: 8px;" id="main-submit-button">
-            </div>
-        </form>
-        <br>
-        <br>
+            <!--<form action="/search_results" method="post" class="col-xs-10 col-md-offset-2 col-md-8 main-form form-group">-->
+            <form action="/search_results" method="post" class="center-block form-group" id="main-form">
+                <div class="input-group col-md-10 col-md-offset-1 col-xs-12">
+                    <input type="text" placeholder="What are you flipping today?" id="first_question"
+                           class="form-control textbox" name="keywords" required>
+                </div>
+                <br>
+                <div class="input-group col-md-10 col-md-offset-1 col-xs-12">
+                    <span class="input-group-addon">$</span>
+                    <input type="text" placeholder="What is the asking price?" class="form-control bfh-number"
+                           data-min="0" data-max="9999999" name="asking_price" required>
+                </div>
+                <br>
+                <div class="category-selector-div col-md-10 col-md-offset-1 col-xs-12" hidden>
+                    <select class="form-control category-selector" name="category">
+                        <option>All Categories</option>
+                        <option value="1" selected>General</option>
+                        <option value="2">Handmade</option>
+                        <option value="3">Music</option>
+                    </select>
+                </div>
+                <!--<input type="submit" value="Search" class="submit-button btn btn-default col-md-2 col-sm-offset-4 col-sm-4-->
+                       <!--col-md-offset-0 col-lg-offset-0"-->
+                       <!--style="padding-left: 8px; padding-right: 8px;" id="main-submit-button">-->
+                <div id="button-wrapper">
+                    <input type="submit" value="Should I buy it?" id="main-submit-button"
+                           class="submit-button btn btn-default col-md-6 col-md-offset-3"
+                           style="padding-left: 8px; padding-right: 8px;">
+                </div>
+            </form>
+            <a href="{{ url_for('about') }}" class="btn btn-default btn-lg" id="circle_info_button">
+              <!--<span class="glyphicon glyphicon-question-sign"></span>-->
+            ?
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block footer %}
-<div></div>
 {% endblock %}
