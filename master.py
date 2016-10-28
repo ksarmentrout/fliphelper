@@ -10,7 +10,7 @@ import functions.utils.utils as utils
 
 # Create the app
 app = Flask(__name__)
-app.config.from_object('flask_config')
+app.config.from_pyfile('flask_config.py')
 
 
 # ---------------------------------------
