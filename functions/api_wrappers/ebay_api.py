@@ -2,12 +2,12 @@
 import pandas
 from ebaysdk.finding import Connection as Finding
 
-import config
+from . import api_config
 from functions.utils import utils
 from functions.utils.errors import *
 
 # Might want to make an ebay.yaml file and put API auth info in it
-api = Finding(appid=config.ebay_app_id, config_file=None)
+api = Finding(appid=api_config.ebay_app_id, config_file=None)
 
 '''
 A few notes to self:

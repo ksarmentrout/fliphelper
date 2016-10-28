@@ -66,8 +66,8 @@ def search_results():
     category = request.form['category']
     asking_price = request.form['asking_price']
 
-    # data_dict = get_all_data(keywords=keywords, category=category, asking_price=asking_price)
-    data_dict = {'ebay': {'provider': 'ebay', 'plot_data': {'mean_values': [48.917654320987602, 49.16804347826082], 'dates': ['Week 43, 2016', 'Week 42, 2016']}, 'active_stats': {'std': '$24.84', 'avg': '$47.19', 'bin_std': '$28.89', 'median': '$48.25', 'count': 299, 'bin_avg': '$45.56', 'bin_median': '$57.17'}, 'verdict': 'buy', 'sold_stats': {'std': '$7.75', 'avg': '$49.04', 'bin_std': None, 'median': '$49.95', 'count': 300, 'bin_avg': None, 'bin_median': None}}, 'provider_count': 1}
+    data_dict = get_all_data(keywords=keywords, category=category, asking_price=asking_price)
+    # data_dict = {'ebay': {'provider': 'ebay', 'plot_data': {'mean_values': [48.917654320987602, 49.16804347826082], 'dates': ['Week 43, 2016', 'Week 42, 2016']}, 'active_stats': {'std': '$24.84', 'avg': '$47.19', 'bin_std': '$28.89', 'median': '$48.25', 'count': 299, 'bin_avg': '$45.56', 'bin_median': '$57.17'}, 'verdict': 'buy', 'sold_stats': {'std': '$7.75', 'avg': '$49.04', 'bin_std': None, 'median': '$49.95', 'count': 300, 'bin_avg': None, 'bin_median': None}}, 'provider_count': 1}
 
     # Formatting
     asking_price = utils.to_float(asking_price)
