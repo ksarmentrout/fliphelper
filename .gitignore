@@ -1,6 +1,5 @@
 .idea/workspace.xml
 config.py
-flask_config.py
 functions/scratch.py
 *.csv
 *.pyc
