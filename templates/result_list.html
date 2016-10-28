@@ -1,22 +1,12 @@
 {% extends "base_layout.html" %}
 {% block title %}Results{% endblock %}
 
+{% block body_class %}results_page_body{% endblock %}
+
 {% block content %}
 <div id="results-div" class="col-md-offset-2 col-md-8">
-    <div class="results-section">
+    <div class="results-section solid_bubble">
         {% if no_results == False %}
-            <!--{% if verdict == 'buy' %}-->
-                <!--<h2 class="buy-verdict">Buy!</h2>-->
-            <!--{% else %}-->
-                <!--<h2 class="pass-verdict">Pass...</h2>-->
-            <!--{% endif %}-->
-            <!--<ul>-->
-                <!--<li>Average sale price: {{ avg }} </li>-->
-                <!--<li>Median sale price: {{ median }} </li>-->
-                <!--<li>Standard deviation: {{ std }} </li>-->
-                <!--<li>Number of items analyzed: {{ count }}</li>-->
-                <!--<li>Asking price for your potential item: {{ asking_price }} </li>-->
-            <!--</ul>-->
             <div class="carousel-buttons controls">
             </div>
             <div id="carousel-wrapper">
@@ -50,19 +40,23 @@
 
     var data_dict = {{ data_dict|tojson }};
 
-
-
     function createTabs() {
         // Create the tab list of the actual providers that will be visible.
         // This is so tabs are created only for those providers for which there
         // is information, instead of having some blank tabs that cover all providers.
-        provider_num = all_providers.length;
+        var provider_num = all_providers.length;
+
         for (var i = 0; i < provider_num; i++) {
-            prov = all_providers[i];
+            var prov = all_providers[i];
             if (prov in data_dict) {
                 tab_list.push(name_mapping[prov]);
                 provider_list.push(prov);
             }
+        }
+
+        // If there is only one provider (like there is initially), do not make tabs.
+        if (provider_list.length === 1) {
+            return;
         }
 
         // Create the tabs above the slides
@@ -81,7 +75,6 @@
 //    data_dict['provider_count']
     function createSlides() {
         var provider_count = data_dict['provider_count'];
-//        var carousel = d3.select('.carousel');
 
         createTabs();
 
@@ -90,22 +83,24 @@
         // the 'active' class
         var stats = data_dict[provider_list[0]];
         var first_slide = d3.select('.active');
-        first_slide.append('h2') // Set the title of the slide
+        first_slide.append('p') // Set the title of the slide
                 .html(tab_list[0])
                 .attr('class', 'provider-name');
+        first_slide.append('div')
+                .attr('class', 'divider col-xs-offset-4 col-xs-4');
 
         setVerdictHeader(first_slide, stats['verdict']);
 
         var first_data_wrapper = first_slide.append('div')
-                    .attr('class', 'row')
+                    .attr('class', 'row center-block')
                     .attr('id', 'slide-data-wrapper');
 
         first_data_wrapper.append('div')
-                .attr('class', 'col-md-offset-2 col-md-4 col-sm-12')
+                .attr('class', 'col-md-offset-2 col-md-4 stat-list')
                 .attr('id', 'sold-prices');
 
         first_data_wrapper.append('div')
-                .attr('class', 'col-md-4 col-sm-12')
+                .attr('class', 'col-md-4 stat-list')
                 .attr('id', 'active-prices');
         populateSlide(first_slide, stats);
 
@@ -128,7 +123,15 @@
 
 
         // Create the content of the rest of the slides
-        listlen = provider_list.length;
+        var listlen = provider_list.length;
+
+        // If there is only one provider/one slide, hide scroll arrows and return
+        if (listlen === 1) {
+            $('.left').hide();
+            $('.right').hide();
+            return;
+        }
+
         for (var i = 1; i < listlen; i++) {
             stats = data_dict[provider_list[i]];
 
@@ -168,7 +171,7 @@
                     label: "Recent Week-to-Week Sale Prices",
                     fill: false,
                     lineTension: 0.1,
-                    backgroundColor: "rgba(75,192,192,0.4)",
+                    backgroundColor: "rgba(75,192,192,1)",
                     borderColor: "rgba(75,192,192,1)",
                     borderCapStyle: 'butt',
                     borderDash: [],
@@ -184,10 +187,12 @@
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: data_points,
-                    spanGaps: false
+                    spanGaps: false,
+                    color: 'rgb(255, 255, 255)'
                 }
             ]
         };
+        Chart.defaults.global.defaultFontColor = "#FFF";
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: data,
@@ -198,7 +203,7 @@
     function setVerdictHeader(div, verdict) {
 //        div.append('br');
         if (verdict == 'pass') {
-            div.append('h2').html('Pass...').attr('class', 'pass-verdict');
+            div.append('h2').html('Pass').attr('class', 'pass-verdict');
         }
         else {
             div.append('h2').html('Buy!').attr('class', 'buy-verdict');
@@ -219,6 +224,7 @@
         var sold_div = div.select('#sold-prices');
         var active_div = div.select('#active-prices');
 
+
 //      First make the sold items column
 //      -----------------------------------------
         sold_div.append('h3').html('Sold Item Data');
@@ -226,12 +232,12 @@
         // Create the unordered list for sold items
         var ul = sold_div.append('ul').attr('class', 'data_ul');
 
-        // 'ebay':{'provider': 'ebay', 'count': 100, 'avg': 50, 'median': 51, 'std': 12, 'verdict': 'pass'}
         ul.append('li').html('Average sale price: ' + String(sold_stats['avg']));
         ul.append('li').html('Median sale price: ' + String(sold_stats['median']));
         ul.append('li').html('Standard deviation: ' + String(sold_stats['std']));
         ul.append('li').html('Number of items analyzed: ' + String(sold_stats['count']));
         ul.append('li').html('Asking price for your potential item: ' + "{{ asking_price }}");
+
 
 //      Then make the active items column
 //      -----------------------------------------
@@ -242,7 +248,7 @@
         active_div.append('h3').html('Active Item Data');
 
         // Create the unordered list for sold items
-        var ul = active_div.append('ul').attr('class', 'data_ul');
+        ul = active_div.append('ul').attr('class', 'data_ul');
 
         // 'ebay':{'provider': 'ebay', 'count': 100, 'avg': 50, 'median': 51, 'std': 12, 'verdict': 'pass'}
         ul.append('li').html('Average sale price: ' + String(active_stats['avg']));
@@ -262,26 +268,20 @@
     $('.carousel').carousel({
 	  wrap: false
 	}).on('slid.bs.carousel', function () {
-		curSlide = $('.active');
-      if(curSlide.is(':first-child') && curSlide.is(':last-child')) {
-
-      }
-      else {
-          if (curSlide.is(':first-child')) {
-              $('.left').hide();
-          } else {
-              $('.left').show();
-          }
-          if (curSlide.is(':last-child')) {
-              $('.right').hide();
-          } else {
-              $('.right').show();
-          }
-      }
+		var curSlide = $('.active');
+        if (curSlide.is(':first-child')) {
+          $('.left').hide();
+        } else {
+          $('.left').show();
+        }
+        if (curSlide.is(':last-child')) {
+          $('.right').hide();
+        } else {
+          $('.right').show();
+        }
 	});
 
     $(document).ready(function(){
-//        d3.select("#another_var_dump").html("{{ asking_price }}");
         createSlides();
         $('.left').hide(); // Hides the left arrow of the carousel
     });
@@ -290,6 +290,3 @@
 
 {% endblock %}
 
-{% block footer %}
-<div></div>
-{% endblock %}

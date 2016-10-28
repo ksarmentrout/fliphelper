@@ -1,6 +1,9 @@
 {% extends "base_layout.html" %}
 {% block title %}FlipHelper: About{% endblock %}
 
+{% block body_class %}about_page_body{% endblock %}
+{% block navbar_class %}about_page_navbar{% endblock %}
+
 {% block content %}
     <div class="about-body solid_bubble col-md-offset-3 col-md-6">
         <h2>What is FlipHelper?</h2>
@@ -35,6 +38,10 @@
             </p>
         <br>
         <h2>Credits/Disclaimers</h2>
+            <p>
+                All site design by <a href="http://ksarmentrout.com" style="color: lightgrey;">
+                Keaton Armentrout</a>.
+            </p>
             <p>
                 The term 'eBay' is a trademark of eBay, Inc. This application uses the eBay API but is not
                 endorsed or certified by eBay, Inc.
