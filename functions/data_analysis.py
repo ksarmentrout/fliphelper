@@ -114,15 +114,22 @@ def ebay_analysis(df, asking_price):
 
 def get_ebay_sold_plot_data(df):
     sdf = df.groupby([df.end_time.dt.week, df.end_time.dt.year])
-    avgs = sdf.mean()
 
     # Extract data into lists for use with Chart.js
     # Dates is a list of (week, year) tuples
     dates = []
     for x in sdf.groups:
         dates.append(x)
-    date_labels = ['Week ' + str(x[0]) + ', ' + str(x[1]) for x in dates]
 
-    mean_values = avgs['sell_price'].tolist()
+    # Sort dates first by year, then by week
+    dates = sorted(dates, key=lambda x: (x[1], x[0]))
+
+    # Get info for each date
+    mean_values = []
+    for x in dates:
+        date_info = sdf.get_group(x)
+        mean_values.append(date_info.mean()['sell_price'])
+
+    date_labels = ['Week ' + str(x[0]) + ', ' + str(x[1]) for x in dates]
 
     return date_labels, mean_values
